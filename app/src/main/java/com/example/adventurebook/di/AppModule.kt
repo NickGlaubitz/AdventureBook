@@ -6,6 +6,8 @@ import coil3.decode.Decoder
 import coil3.network.NetworkFetcher
 import com.example.adventurebook.data.local.AppDatabase
 import com.example.adventurebook.data.local.Avatar
+import com.example.adventurebook.data.remote.OpenAiApi
+import com.example.adventurebook.data.remote.OpenAiService
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
