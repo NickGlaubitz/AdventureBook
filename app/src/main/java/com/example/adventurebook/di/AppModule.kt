@@ -8,6 +8,12 @@ import com.example.adventurebook.data.local.AppDatabase
 import com.example.adventurebook.data.local.Avatar
 import com.example.adventurebook.data.remote.OpenAiApi
 import com.example.adventurebook.data.remote.OpenAiService
+import com.example.adventurebook.data.repos.AvatarRepoImpl
+import com.example.adventurebook.data.repos.AvatarRepoInterface
+import com.example.adventurebook.data.repos.StoryRepoImpl
+import com.example.adventurebook.data.repos.StoryRepoInterface
+import com.example.adventurebook.data.viewmodel.OnboardingViewModel
+import com.example.adventurebook.data.viewmodel.StoryViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -26,11 +32,11 @@ val databaseModule = module {
 }
 
 val repositoryModule = module {
-    single<AvatarRepo> {
+    single<AvatarRepoInterface> {
         AvatarRepoImpl(get())
     }
 
-    single<StoryRepo> {
+    single<StoryRepoInterface> {
         StoryRepoImpl(get())
     }
 }
