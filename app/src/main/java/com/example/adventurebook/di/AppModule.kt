@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
 import coil3.decode.Decoder
 import coil3.network.NetworkFetcher
+import com.example.adventurebook.Constants
 import com.example.adventurebook.data.local.AppDatabase
 import com.example.adventurebook.data.local.Avatar
 import com.example.adventurebook.data.remote.OpenAiApi
@@ -14,6 +15,7 @@ import com.example.adventurebook.data.repos.StoryRepoImpl
 import com.example.adventurebook.data.repos.StoryRepoInterface
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
+import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
@@ -44,11 +46,18 @@ val repositoryModule = module {
 val viewModelModule = module {
     viewModel { OnboardingViewModel(get()) }
 
-    viewModel { StoryViewModel(get(), get()) }
+    viewModel { StoryViewModel(get(), get(), get()) }
 }
 
 val apiModule = module {
     single {
+        val client = OkHttpClient.Builder().addInterceptor { chain ->
+
+            val request = chain.request().newBuilder().addHeader("Authorization", "Bearer ${Constants.OPENAI_API_KEY}").build()
+
+            chain.proceed(request)
+        }
+            .build()
         Retrofit.Builder()
             .baseUrl("https://api.openai.com/")
             .addConverterFactory(MoshiConverterFactory.create())
