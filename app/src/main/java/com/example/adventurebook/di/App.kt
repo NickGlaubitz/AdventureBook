@@ -1,0 +1,15 @@
+package com.example.adventurebook.di
+
+import android.app.Application
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+
+class App: Application() {
+    override fun onCreate() {
+        super.onCreate()
+        startKoin {
+            androidContext(this@App)
+            modules(databaseModule, repositoryModule, viewModelModule, apiModule)
+        }
+    }
+}
