@@ -3,26 +3,20 @@ package com.example.adventurebook.data.remote
 class OpenAiService(private val api: OpenAiApi) {
 
     suspend fun generateText(prompt: String): String {
-        val request = TextRequest(
-            model = "gpt-4o",
-            prompt = prompt,
-            max_tokens = 1000
+        val request = ChatRequest(
+            messages = listOf(ChatRequest.Message(role = "user", content = prompt))
         )
 
         val response = api.generateText(request)
 
-        return response.choices.firstOrNull()?.text ?: "Fehler beim generieren der Geschichte"
+        return response.choices.firstOrNull()?.message?.content ?: "Fehler beim generieren der Geschichte"
     }
 
     suspend fun generateImage(prompt: String): String {
-        val request = ImageRequest(
-            prompt = prompt,
-            n = 1,
-            size = "512x512"
-        )
+        val request = ImageRequest(prompt = prompt)
 
         val response = api.generateImage(request)
 
-        return response.data.firstOrNull()?.url ?: "Fehler beim laden von Bilddatei"
+        return response.data.firstOrNull()?.url ?: "Fehler beim laden von Bildern"
     }
 }
