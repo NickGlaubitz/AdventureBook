@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,6 +11,8 @@ plugins {
     //Room
     alias(libs.plugins.kotlin.ksp)
 }
+
+//val apiKey = gradleLocalProperties(rootDir, providers).getProperty("OPENAI_API_KEY")
 
 android {
     namespace = "com.example.adventurebook"
@@ -42,6 +46,7 @@ android {
     }
     buildFeatures {
         compose = true
+        //buildFeatures = true
     }
 }
 
