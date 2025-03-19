@@ -1,5 +1,6 @@
 package com.example.adventurebook.data.remote
 
+import com.squareup.moshi.Json
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -12,34 +13,40 @@ interface OpenAiApi {
 }
 
 data class ChatRequest(
-    val model: String = "gpt-4o",
-    val messages: List<Message>,
-    val max_tokens: Int = 1000
+    @Json(name = "model") val model: String = "gpt-4o",
+    @Json(name = "message") val messages: List<Message>,
+    @Json(name = "max_tokens") val max_tokens: Int = 1000
 ) {
     data class Message(
-        val role: String,
-        val content: String
+        @Json(name = "role") val role: String,
+        @Json(name = "content") val content: String
     )
 }
 
 
 
 data class ChatResponse(
-    val choices: List<Choice>
+    @Json(name = "choices") val choices: List<Choice>
 ) {
-    data class Choice(val message: Message)
-    data class Message(val content: String)
+    data class Choice(
+        @Json(name = "message") val message: Message
+    )
+    data class Message(
+        @Json(name = "content") val content: String
+    )
 }
 
 data class ImageRequest(
-    val model: String = "dall-e-3",
-    val prompt: String,
-    val n: Int = 1,
-    val size: String = "512x512"
+    @Json(name = "model") val model: String = "dall-e-3",
+    @Json(name = "prompt") val prompt: String,
+    @Json(name = "n") val n: Int = 1,
+    @Json(name = "size") val size: String = "512x512"
 )
 
 data class ImageResponse(
-    val data: List<ImageData>
+    @Json(name = "data") val data: List<ImageData>
 ) {
-    data class ImageData(val url: String)
+    data class ImageData(
+        @Json(name = "url") val url: String
+    )
 }
