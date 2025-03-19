@@ -15,6 +15,8 @@ import com.example.adventurebook.data.repos.StoryRepoImpl
 import com.example.adventurebook.data.repos.StoryRepoInterface
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
@@ -58,9 +60,14 @@ val apiModule = module {
             chain.proceed(request)
         }
             .build()
+
+        val moshi = Moshi.Builder()
+            .add(KotlinJsonAdapterFactory())
+            .build()
         Retrofit.Builder()
             .baseUrl("https://api.openai.com/")
-            .addConverterFactory(MoshiConverterFactory.create())
+            .client(client)
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
             .create(OpenAiApi::class.java)
     }
