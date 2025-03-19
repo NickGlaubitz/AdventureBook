@@ -1,4 +1,4 @@
-package com.example.adventurebook.ui.theme
+package com.example.adventurebook.ui.ui.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle
