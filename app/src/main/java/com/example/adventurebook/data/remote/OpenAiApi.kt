@@ -14,8 +14,8 @@ interface OpenAiApi {
 
 data class ChatRequest(
     @Json(name = "model") val model: String = "gpt-4o",
-    @Json(name = "message") val messages: List<Message>,
-    @Json(name = "max_tokens") val max_tokens: Int = 1000
+    @Json(name = "messages") val messages: List<Message>,
+    @Json(name = "max_tokens") val maxTokens: Int = 1000
 ) {
     data class Message(
         @Json(name = "role") val role: String,
@@ -40,7 +40,7 @@ data class ImageRequest(
     @Json(name = "model") val model: String = "dall-e-3",
     @Json(name = "prompt") val prompt: String,
     @Json(name = "n") val n: Int = 1,
-    @Json(name = "size") val size: String = "512x512"
+    @Json(name = "size") val size: String = "1024x1024"
 )
 
 data class ImageResponse(

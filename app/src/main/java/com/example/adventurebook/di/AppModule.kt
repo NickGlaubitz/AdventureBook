@@ -25,6 +25,7 @@ import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.create
+import java.util.concurrent.TimeUnit
 
 val databaseModule = module {
     single {
@@ -59,6 +60,10 @@ val apiModule = module {
 
             chain.proceed(request)
         }
+            .connectTimeout(30, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(90, TimeUnit.SECONDS)
+            .retryOnConnectionFailure(true)
             .build()
 
         val moshi = Moshi.Builder()
