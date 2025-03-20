@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -43,11 +44,13 @@ import com.example.adventurebook.ui.ui.components.ThemeSheet
 import com.example.adventurebook.ui.ui.components.TypeSheet
 import com.example.adventurebook.ui.ui.components.WorldSheet
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel, onboardingViewModel: OnboardingViewModel) {
+fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
 
+    val onboardingViewModel: OnboardingViewModel = koinViewModel()
     var avatar by remember { mutableStateOf<Avatar?>(null) }
     var type by remember { mutableStateOf("Abenteuer") }
     var theme by remember { mutableStateOf("Freundschaft") }
@@ -67,7 +70,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel, onb
                 title = { Text("Willkommen ${avatar?.name ?: ""}") },
                 actions = {
                     IconButton(onClick = { /* Einstellungen */ }) {
-                        Icon(Icons.Default.Menu, contentDescription = "Menü")
+                        Icon(Icons.Default.MoreVert, contentDescription = "Menü")
                     }
                 }
             )
