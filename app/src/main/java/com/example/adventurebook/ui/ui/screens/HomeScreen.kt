@@ -1,8 +1,10 @@
 package com.example.adventurebook.ui.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +12,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
@@ -47,6 +55,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.adventurebook.data.local.Avatar
@@ -55,6 +65,7 @@ import com.example.adventurebook.data.repos.CharacterRepoInterface
 import com.example.adventurebook.data.viewmodel.CharacterViewModel
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
+import com.example.adventurebook.ui.ui.components.CharacterButton
 import com.example.adventurebook.ui.ui.components.ThemeSheet
 import com.example.adventurebook.ui.ui.components.TypeSheet
 import com.example.adventurebook.ui.ui.components.WorldSheet
@@ -238,14 +249,57 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
             Text("Nebencharaktere", style = MaterialTheme.typography.headlineMedium)
             Spacer(modifier = Modifier.height(8.dp))
 
+            LazyRow {
+                item {
+                    avatar?.let {
+                        CharacterButton(
+                            name = it.name,
+                            isSelected = selectedCharacters.contains(it.name),
+                            onClick = {
+                                selectedCharacters = if (selectedCharacters.contains(it.name)) {
+                                    selectedCharacters - it.name
+                                } else {
+                                    selectedCharacters + it.name
+                                }
+                            }
+                        )
+                    }
+                }
+                items(characters) { character ->
+                    CharacterButton(
+                        name = character.name,
+                        isSelected = selectedCharacters.contains(character.name),
+                        onClick = {
+                            selectedCharacters = if (selectedCharacters.contains(character.name)) {
+                                selectedCharacters - character.name
+                            } else {
+                                selectedCharacters + character.name
+                            }
+                        }
+                    )
+                }
+                item {
+                    Box(
+                        modifier = Modifier
+                            .size(60.dp)
+                            .clip(CircleShape)
+                            .background(MaterialTheme.colorScheme.primary)
+                            .clickable { showAddDialog = true },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                }
+            }
 
+            Spacer(modifier = Modifier.height(16.dp))
 
             Button(onClick = {
-                val characterList = characters.split(".").map { it.trim() }
-                storyViewModel.generateStory(type, theme, world, characterList)
+                storyViewModel.generateStory(type, theme, world, selectedCharacters)
                 navController.navigate("story")
             }) {
-                Text("Geschichte erzeugen")
+                Text("Generieren")
             }
         }
     }
