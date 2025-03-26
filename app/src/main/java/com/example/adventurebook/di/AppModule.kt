@@ -11,6 +11,8 @@ import com.example.adventurebook.data.remote.OpenAiApi
 import com.example.adventurebook.data.remote.OpenAiService
 import com.example.adventurebook.data.repos.AvatarRepoImpl
 import com.example.adventurebook.data.repos.AvatarRepoInterface
+import com.example.adventurebook.data.repos.CharacterRepoImpl
+import com.example.adventurebook.data.repos.CharacterRepoInterface
 import com.example.adventurebook.data.repos.StoryRepoImpl
 import com.example.adventurebook.data.repos.StoryRepoInterface
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
@@ -34,6 +36,7 @@ val databaseModule = module {
 
     single { get<AppDatabase>().avatarDao() }
     single { get<AppDatabase>().storyDao() }
+    single { get<AppDatabase>().characterDao() }
 }
 
 val repositoryModule = module {
@@ -43,6 +46,10 @@ val repositoryModule = module {
 
     single<StoryRepoInterface> {
         StoryRepoImpl(get())
+    }
+
+    single<CharacterRepoInterface> {
+        CharacterRepoImpl(get())
     }
 }
 
