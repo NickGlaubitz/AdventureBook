@@ -232,15 +232,13 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 }
             }
 
-            // Nebencharaktere
-            TextField(
-                value = characters,
-                onValueChange = { characters = it },
-                placeholder = { Text("Nebencharaktere") },
-                modifier = Modifier.fillMaxWidth()
-            )
-
             Spacer(modifier = Modifier.height(16.dp))
+
+            // Characters
+            Text("Nebencharaktere", style = MaterialTheme.typography.headlineMedium)
+            Spacer(modifier = Modifier.height(8.dp))
+
+
 
             Button(onClick = {
                 val characterList = characters.split(".").map { it.trim() }
