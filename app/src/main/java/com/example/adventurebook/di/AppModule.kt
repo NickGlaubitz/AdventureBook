@@ -15,6 +15,7 @@ import com.example.adventurebook.data.repos.CharacterRepoImpl
 import com.example.adventurebook.data.repos.CharacterRepoInterface
 import com.example.adventurebook.data.repos.StoryRepoImpl
 import com.example.adventurebook.data.repos.StoryRepoInterface
+import com.example.adventurebook.data.viewmodel.CharacterViewModel
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
 import com.squareup.moshi.Moshi
@@ -57,6 +58,8 @@ val viewModelModule = module {
     viewModel { OnboardingViewModel(get()) }
 
     viewModel { StoryViewModel(get(), get(), get()) }
+
+    viewModel { CharacterViewModel(get()) }
 }
 
 val apiModule = module {

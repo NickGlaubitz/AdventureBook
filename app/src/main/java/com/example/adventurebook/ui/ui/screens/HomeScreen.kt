@@ -43,6 +43,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.adventurebook.data.local.Avatar
+import com.example.adventurebook.data.repos.CharacterRepoInterface
+import com.example.adventurebook.data.viewmodel.CharacterViewModel
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
 import com.example.adventurebook.ui.ui.components.ThemeSheet
@@ -50,12 +52,15 @@ import com.example.adventurebook.ui.ui.components.TypeSheet
 import com.example.adventurebook.ui.ui.components.WorldSheet
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
 
     val onboardingViewModel: OnboardingViewModel = koinViewModel()
+    val characterViewModel: CharacterViewModel = koinViewModel()
+
     var avatar by remember { mutableStateOf<Avatar?>(null) }
     var type by remember { mutableStateOf("Abenteuer") }
     var theme by remember { mutableStateOf("Freundschaft") }
