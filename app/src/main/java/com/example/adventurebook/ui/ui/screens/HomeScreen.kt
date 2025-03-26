@@ -1,13 +1,18 @@
 package com.example.adventurebook.ui.ui.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.BottomSheetScaffold
@@ -56,9 +61,9 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
     var theme by remember { mutableStateOf("Freundschaft") }
     var world by remember { mutableStateOf("Zauberwald") }
     var characters by remember { mutableStateOf("Drache, Fee") }
-    val scope = rememberCoroutineScope()
-    val sheetState = rememberStandardBottomSheetState(initialValue = SheetValue.Hidden, skipHiddenState = false)
-    var sheetContent by remember { mutableStateOf<@Composable () -> Unit>({}) }
+    var expandType by remember { mutableStateOf(false) }
+    var expandTheme by remember { mutableStateOf(false) }
+    var expandWorld by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit) {
         avatar = onboardingViewModel.getAvatar()
@@ -89,62 +94,121 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
 
             // Typ Card
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        scope.launch {
-                            sheetContent = {
-                                TypeSheet { selectedType ->
-                                    type = selectedType
-                                    scope.launch { sheetState.hide() }
-                                }
-                            }
-                            sheetState.show()
-                        }
-                    },
+                modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp)
             ) {
-                Text("Geschichtenart: $type", modifier = Modifier.padding(16.dp))
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { expandType = !expandType }
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Geschichtenart: $type")
+                        Icon(
+                            imageVector = if (expandType) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = ""
+                        )
+                    }
+                    AnimatedVisibility(visible = expandType) {
+                        Row(modifier = Modifier.padding(16.dp)) {
+                            listOf("Abenteuer", "Märchen", "Fantasie").forEach { option ->
+                                Card(
+                                    modifier = Modifier
+                                        .padding(end = 8.dp)
+                                        .clickable {
+                                            type = option
+                                            expandType = false
+                                        },
+                                    elevation = CardDefaults.cardElevation(2.dp)
+                                ) {
+                                    Text(option, modifier = Modifier.padding(8.dp))
+                                }
+                            }
+                        }
+                    }
+                }
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             // Theme Card
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        scope.launch {
-                            sheetContent = {
-                                ThemeSheet { selectedTheme ->
-                                    theme = selectedTheme
-                                    scope.launch { sheetState.hide() }
-                                }
-                            }
-                            sheetState.show()
-                        }
-                    },
+                modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp)
             ) {
-                Text("Geschichtenthema: $theme", modifier = Modifier.padding(16.dp))
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { expandTheme = !expandTheme }
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Geschichtentyp: $theme")
+                        Icon(
+                            imageVector = if (expandTheme) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = ""
+                        )
+                    }
+                    AnimatedVisibility(visible = expandTheme) {
+                        Row(modifier = Modifier.padding(16.dp)) {
+                            listOf("Freundschaft", "Mut", "Liebe").forEach { option ->
+                                Card(
+                                    modifier = Modifier
+                                        .padding(end = 8.dp)
+                                        .clickable {
+                                            theme = option
+                                            expandTheme = false
+                                        },
+                                    elevation = CardDefaults.cardElevation(2.dp)
+                                ) {
+                                    Text(option, modifier = Modifier.padding(8.dp))
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             // World Card
             Card(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clickable {
-                        scope.launch {
-                            sheetContent = {
-                                WorldSheet { selectedWorld ->
-                                    world = selectedWorld
-                                    scope.launch { sheetState.hide() }
-                                }
-                            }
-                            sheetState.show()
-                        }
-                    },
+                modifier = Modifier.fillMaxWidth(),
                 elevation = CardDefaults.cardElevation(4.dp)
             ) {
-                Text("Welt: $world", modifier = Modifier.padding(16.dp))
+                Column {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { expandWorld = !expandWorld }
+                            .padding(16.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("Geschichtenwelt: $world")
+                        Icon(
+                            imageVector = if (expandWorld) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
+                            contentDescription = ""
+                        )
+                    }
+                    AnimatedVisibility(visible = expandWorld) {
+                        Row(modifier = Modifier.padding(16.dp)) {
+                            listOf("Weltraum", "Zauberwald", "Unterwasserwelt").forEach { option ->
+                                Card(
+                                    modifier = Modifier
+                                        .padding(end = 8.dp)
+                                        .clickable {
+                                            world = option
+                                            expandWorld = false
+                                        },
+                                    elevation = CardDefaults.cardElevation(2.dp)
+                                ) {
+                                    Text(option, modifier = Modifier.padding(8.dp))
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
             // Nebencharaktere
@@ -165,9 +229,5 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 Text("Geschichte erzeugen")
             }
         }
-
-        BottomSheetScaffold(
-            sheetContent = { sheetContent() }
-        ) { }
     }
 }
