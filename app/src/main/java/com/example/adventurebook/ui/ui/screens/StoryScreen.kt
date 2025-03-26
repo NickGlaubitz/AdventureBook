@@ -49,7 +49,7 @@ import com.example.adventurebook.data.viewmodel.StoryViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StoryScreen(
-    navhController: NavController,
+    navController: NavController,
     viewModel: StoryViewModel
 ) {
     val story by viewModel.currentStory.collectAsState()
@@ -100,27 +100,6 @@ fun StoryScreen(
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-//                    Text(story!!.title, style = MaterialTheme.typography.headlineMedium, color = Color.White)
-//                    Text(story!!.content, style = MaterialTheme.typography.bodyMedium, color = Color.White)
-//
-//                    Row {
-//                        Button(onClick = {
-//                            viewModel.saveCurrentStory { id ->
-//                                Toast.makeText(context, "Geschichte gespeichert", Toast.LENGTH_SHORT).show()
-//                            }
-//                        }) {
-//                            Text("Speichern")
-//                        }
-//
-//                        Spacer(modifier = Modifier.width(8.dp))
-//
-//                        Button(onClick = {
-//                            // Fortsetzen später integrieren
-//                            Toast.makeText(context, "Fortsetzung noh nicht implementiert", Toast.LENGTH_SHORT).show()
-//                        }) {
-//                            Text("Fortsetzen")
-//                        }
-//                    }
                     Text(
                         text = paragraphs.getOrNull(currentParagraph) ?: "Wie soll es weitergehen?",
                         style = MaterialTheme.typography.bodyMedium,
