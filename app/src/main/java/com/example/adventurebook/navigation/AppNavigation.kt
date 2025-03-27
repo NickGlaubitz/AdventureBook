@@ -12,6 +12,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
@@ -32,11 +33,12 @@ fun AppNavigation() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
+        containerColor = Color.DarkGray,
         bottomBar = {
-            NavigationBar {
+            NavigationBar(containerColor = Color.DarkGray, contentColor = Color.White) {
                 NavigationBarItem(
-                    icon = { Icon(Icons.Default.Home, contentDescription = "Home") },
-                    label = { Text("Home") },
+                    icon = { Icon(Icons.Default.Home, contentDescription = "Home", tint = Color.Black) },
+                    label = { Text("Home", color = Color.LightGray) },
                     selected = currentRoute == "home",
                     onClick = {
                         navController.navigate("home") {
@@ -47,8 +49,8 @@ fun AppNavigation() {
                 )
 
                 NavigationBarItem(
-                    icon = { Icon(Icons.Default.Menu, contentDescription = "Library") },
-                    label = { Text("Library") },
+                    icon = { Icon(Icons.Default.Menu, contentDescription = "Library", tint = Color.Black) },
+                    label = { Text("Library", color = Color.LightGray) },
                     selected = currentRoute == "library",
                     onClick = {
                         navController.navigate("library") {

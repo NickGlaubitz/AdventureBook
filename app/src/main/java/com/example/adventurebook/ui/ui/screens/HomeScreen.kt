@@ -2,6 +2,7 @@ package com.example.adventurebook.ui.ui.screens
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -44,6 +46,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -104,30 +107,39 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text("Willkommen ${avatar?.name ?: ""}") },
+                colors = TopAppBarColors(
+                    containerColor = Color.DarkGray,
+                    scrolledContainerColor = Color.DarkGray,
+                    navigationIconContentColor = Color.White,
+                    titleContentColor = Color.White,
+                    actionIconContentColor = Color.White
+                ),
+                title = { Text("Hallo ${avatar?.name ?: ""},") },
                 actions = {
                     IconButton(onClick = { /* Einstellungen */ }) {
                         Icon(Icons.Default.MoreVert, contentDescription = "Menü")
                     }
                 }
             )
-        }
+        },
+        containerColor = Color.DarkGray
     ) { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
-                .padding(16.dp)
+                .padding(horizontal = 16.dp)
                 .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+            //horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Text("Neue Geschichte", style = MaterialTheme.typography.headlineMedium)
+            Text("Lass uns eine neue Geschichte erstellen", style = MaterialTheme.typography.bodyLarge, color = Color.White)
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(32.dp))
 
             // Typ Card
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp)
+                modifier = Modifier.fillMaxWidth().border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp)),
+                elevation = CardDefaults.cardElevation(4.dp),
+                colors = CardDefaults.cardColors(Color.DarkGray)
             ) {
                 Column {
                     Row(
@@ -137,10 +149,11 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("Geschichtenart: $type")
+                        Text("Wähle die Art deiner Geschichte: \n\n$type", color = Color.LightGray)
                         Icon(
                             imageVector = if (expandType) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = Color.LightGray
                         )
                     }
                     AnimatedVisibility(visible = expandType) {
@@ -167,8 +180,9 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
 
             // Theme Card
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp)
+                modifier = Modifier.fillMaxWidth().border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp)),
+                elevation = CardDefaults.cardElevation(4.dp),
+                colors = CardDefaults.cardColors(Color.DarkGray)
             ) {
                 Column {
                     Row(
@@ -178,10 +192,11 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("Geschichtentyp: $theme")
+                        Text("Wähle das Thema deiner Geschichte: \n\n$theme", color = Color.LightGray)
                         Icon(
                             imageVector = if (expandTheme) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = Color.LightGray
                         )
                     }
                     AnimatedVisibility(visible = expandTheme) {
@@ -204,10 +219,13 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 }
             }
 
+            Spacer(modifier = Modifier.height(8.dp))
+
             // World Card
             Card(
-                modifier = Modifier.fillMaxWidth(),
-                elevation = CardDefaults.cardElevation(4.dp)
+                modifier = Modifier.fillMaxWidth().border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp)),
+                elevation = CardDefaults.cardElevation(4.dp),
+                colors = CardDefaults.cardColors(Color.DarkGray)
             ) {
                 Column {
                     Row(
@@ -217,10 +235,11 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                             .padding(16.dp),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("Geschichtenwelt: $world")
+                        Text("Wähle die Welt deiner Geschichte: \n\n$world", color = Color.LightGray)
                         Icon(
                             imageVector = if (expandWorld) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = ""
+                            contentDescription = "",
+                            tint = Color.LightGray
                         )
                     }
                     AnimatedVisibility(visible = expandWorld) {
