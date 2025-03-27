@@ -104,7 +104,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
     var expandWorld by remember { mutableStateOf(false) }
     var showAddDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
+    LaunchedEffect(Unit, characters) {
         avatar = onboardingViewModel.getAvatar()
         characters = characterViewModel.getAllCharacters()
         avatar?.let { selectedCharacters = listOf(it.name) }
@@ -170,13 +170,15 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                                 Card(
                                     modifier = Modifier
                                         .padding(end = 8.dp)
+                                        .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(12.dp))
                                         .clickable {
                                             type = option
                                             expandType = false
                                         },
-                                    elevation = CardDefaults.cardElevation(2.dp)
+                                    elevation = CardDefaults.cardElevation(8.dp),
+                                    colors = CardDefaults.cardColors(Color.DarkGray)
                                 ) {
-                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall)
+                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall, color = Color.LightGray)
                                 }
                             }
                         }
@@ -314,7 +316,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                             .clickable { showAddDialog = true },
                         contentAlignment = Alignment.Center
                     ) {
-                        Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.White)
+                        Icon(Icons.Default.Add, contentDescription = "Add", tint = Color.LightGray)
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                 }
