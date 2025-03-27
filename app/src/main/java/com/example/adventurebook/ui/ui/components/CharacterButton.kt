@@ -17,6 +17,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.adventurebook.ui.ui.theme.Purple40
+
 
 @Composable
 fun CharacterButton(name: String, isSelected: Boolean, onClick: () -> Unit) {
@@ -25,13 +27,14 @@ fun CharacterButton(name: String, isSelected: Boolean, onClick: () -> Unit) {
             modifier = Modifier
                 .size(60.dp)
                 .clip(CircleShape)
-                .background(if (isSelected) MaterialTheme.colorScheme.primary else Color.Gray)
-                .border(if (isSelected) 2.dp else 0.dp, Color.Blue, CircleShape)
-                .clickable { onClick() }
+                .background(Color.DarkGray)
+                .border(if (isSelected) 2.dp else 2.dp, if (isSelected) Purple40 else Color.LightGray, CircleShape)
+                .clickable { onClick() },
+            contentAlignment = Alignment.Center
         ) {
             Text(name.take(2), color = Color.White)
         }
-        Text(name, style = MaterialTheme.typography.labelSmall)
+        Text(name, style = MaterialTheme.typography.labelSmall, color = Color.LightGray)
     }
     Spacer(modifier = Modifier.width(8.dp))
 }

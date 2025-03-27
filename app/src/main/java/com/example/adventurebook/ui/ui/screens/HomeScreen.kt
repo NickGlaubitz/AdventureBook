@@ -39,6 +39,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheetDefaults
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Surface
@@ -72,6 +73,7 @@ import com.example.adventurebook.ui.ui.components.CharacterButton
 import com.example.adventurebook.ui.ui.components.ThemeSheet
 import com.example.adventurebook.ui.ui.components.TypeSheet
 import com.example.adventurebook.ui.ui.components.WorldSheet
+import com.example.adventurebook.ui.ui.theme.Purple40
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -130,6 +132,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 .padding(horizontal = 16.dp)
                 .fillMaxSize(),
             //horizontalAlignment = Alignment.CenterHorizontally
+            //verticalArrangement = Arrangement.Top
         ) {
             Text("Lass uns eine neue Geschichte erstellen", style = MaterialTheme.typography.bodyLarge, color = Color.White)
 
@@ -168,7 +171,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                                         },
                                     elevation = CardDefaults.cardElevation(2.dp)
                                 ) {
-                                    Text(option, modifier = Modifier.padding(8.dp))
+                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall)
                                 }
                             }
                         }
@@ -211,7 +214,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                                         },
                                     elevation = CardDefaults.cardElevation(2.dp)
                                 ) {
-                                    Text(option, modifier = Modifier.padding(8.dp))
+                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall)
                                 }
                             }
                         }
@@ -254,7 +257,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                                         },
                                     elevation = CardDefaults.cardElevation(2.dp)
                                 ) {
-                                    Text(option, modifier = Modifier.padding(8.dp))
+                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall)
                                 }
                             }
                         }
@@ -262,11 +265,11 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 }
             }
 
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
             // Characters
-            Text("Nebencharaktere", style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(8.dp))
+            Text("Füge Nebencharaktere hinzu:", style = MaterialTheme.typography.bodyLarge, color = Color.White)
+            Spacer(modifier = Modifier.height(16.dp))
 
             LazyRow {
                 item {
@@ -302,7 +305,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                         modifier = Modifier
                             .size(60.dp)
                             .clip(CircleShape)
-                            .background(MaterialTheme.colorScheme.primary)
+                            .background(Purple40)
                             .clickable { showAddDialog = true },
                         contentAlignment = Alignment.Center
                     ) {
@@ -314,11 +317,13 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = {
-                storyViewModel.generateStory(type, theme, world, selectedCharacters)
-                navController.navigate("story")
-            }) {
-                Text("Generieren")
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                OutlinedButton(onClick = {
+                    storyViewModel.generateStory(type, theme, world, selectedCharacters)
+                    navController.navigate("story")
+                }) {
+                    Text("Generieren", color = Color.White)
+                }
             }
         }
     }
