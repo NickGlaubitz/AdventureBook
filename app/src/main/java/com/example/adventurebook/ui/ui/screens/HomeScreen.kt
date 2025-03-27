@@ -73,6 +73,7 @@ import com.example.adventurebook.ui.ui.components.CharacterButton
 import com.example.adventurebook.ui.ui.components.ThemeSheet
 import com.example.adventurebook.ui.ui.components.TypeSheet
 import com.example.adventurebook.ui.ui.components.WorldSheet
+import com.example.adventurebook.ui.ui.theme.Background
 import com.example.adventurebook.ui.ui.theme.Purple40
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -109,8 +110,9 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
     Scaffold(
         topBar = {
             TopAppBar(
+                modifier = Modifier.height(70.dp),
                 colors = TopAppBarColors(
-                    containerColor = Color.DarkGray,
+                    containerColor = Background,
                     scrolledContainerColor = Color.DarkGray,
                     navigationIconContentColor = Color.White,
                     titleContentColor = Color.White,
@@ -124,7 +126,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 }
             )
         },
-        containerColor = Color.DarkGray
+        containerColor = Background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -134,7 +136,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
             //horizontalAlignment = Alignment.CenterHorizontally
             //verticalArrangement = Arrangement.Top
         ) {
-            Text("Lass uns eine neue Geschichte erstellen", style = MaterialTheme.typography.bodyLarge, color = Color.White)
+            Text("lass uns eine neue Geschichte erstellen...", style = MaterialTheme.typography.bodyLarge, color = Color.White)
 
             Spacer(modifier = Modifier.height(32.dp))
 

@@ -41,6 +41,7 @@ import com.example.adventurebook.data.repos.AvatarRepoInterface
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.ui.ui.components.GenderCardBoy
 import com.example.adventurebook.ui.ui.components.GenderCardGirl
+import com.example.adventurebook.ui.ui.theme.Background
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -55,7 +56,7 @@ fun OnBoardingScreen(viewModel: OnboardingViewModel) {
 
     Box(modifier = Modifier
         .fillMaxSize()
-        .background(Color.DarkGray)
+        .background(Background)
     ) {
         Column(
             modifier = Modifier

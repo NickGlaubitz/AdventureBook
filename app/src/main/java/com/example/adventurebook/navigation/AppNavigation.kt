@@ -22,6 +22,8 @@ import com.example.adventurebook.ui.ui.screens.HomeScreen
 import com.example.adventurebook.ui.ui.screens.LibraryScreen
 import com.example.adventurebook.ui.ui.screens.StoryDetailScreen
 import com.example.adventurebook.ui.ui.screens.StoryScreen
+import com.example.adventurebook.ui.ui.theme.Background
+import com.example.adventurebook.ui.ui.theme.PurpleGrey40
 import org.koin.androidx.compose.koinViewModel
 import org.koin.java.KoinJavaComponent.inject
 
@@ -33,9 +35,9 @@ fun AppNavigation() {
     val currentRoute = navBackStackEntry?.destination?.route
 
     Scaffold(
-        containerColor = Color.DarkGray,
+        containerColor = Background,
         bottomBar = {
-            NavigationBar(containerColor = Color.DarkGray, contentColor = Color.White) {
+            NavigationBar(containerColor = Background, contentColor = Color.White) {
                 NavigationBarItem(
                     icon = { Icon(Icons.Default.Home, contentDescription = "Home", tint = Color.Black) },
                     label = { Text("Home", color = Color.LightGray) },
