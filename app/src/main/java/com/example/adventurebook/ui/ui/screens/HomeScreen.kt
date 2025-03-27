@@ -322,7 +322,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                     storyViewModel.generateStory(type, theme, world, selectedCharacters)
                     navController.navigate("story")
                 }) {
-                    Text("Generieren", color = Color.White)
+                    Text("Los geht´s", color = Color.White)
                 }
             }
         }
