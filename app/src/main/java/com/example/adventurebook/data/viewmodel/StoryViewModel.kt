@@ -23,10 +23,17 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
             val storyText = openAiService.generateText(prompt)
             
             val imageUrl = openAiService.generateImage(storyText.substring(0, minOf(100, storyText.length)))
+
+            // Titel und Inhalt trennen
+
+            val titleMatch = Regex("\\*\\*(.*?)\\*\\*").find(storyText)
+            var title = titleMatch?.groupValues?.get(1) ?: "Neue Geschichte für ${avatar.name}"
+            title = title.replace(Regex("^Titel:\\s*"), "")
+            val content = storyText.replace(Regex("\\*\\*.*?\\*\\*\\n*"), "").trim()
             
             currentStory.value = Story(
-                title = "",
-                content = storyText,
+                title = title,
+                content = content,
                 ImageUrl = imageUrl
             )
         }

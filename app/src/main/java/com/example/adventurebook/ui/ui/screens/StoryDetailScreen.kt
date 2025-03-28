@@ -66,14 +66,14 @@ fun StoryDetailScreen(
             model = it.ImageUrl,
             contentDescription = "Story Image",
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
         )
 
         Scaffold(
             topBar = {
                 TopAppBar(
                     modifier = Modifier.height(70.dp),
-                    title = { Text(it.title, color = Color.White) },
+                    title = { /*Text(it.title, color = Color.White)*/ },
                     actions = {
                         IconButton(onClick = {
                             viewModel.deleteStory(it)

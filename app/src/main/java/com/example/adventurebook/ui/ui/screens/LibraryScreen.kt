@@ -45,8 +45,9 @@ fun LibraryScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .padding(6.dp)
                     .border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp))
-                    //.padding(bottom = 8.dp)
+
                     .clickable { navController.navigate("story/${story.id}") },
                 elevation = CardDefaults.cardElevation(4.dp),
                 colors = CardDefaults.cardColors(Color.DarkGray)
@@ -71,8 +72,7 @@ fun LibraryScreen(
                             .fillMaxHeight(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(story.title, style = MaterialTheme.typography.headlineMedium, color = Color.LightGray)
-                        Text(story.content.take(50) + "...", style = MaterialTheme.typography.bodyLarge, color = Color.LightGray)
+                        Text(story.title, style = MaterialTheme.typography.bodyLarge, color = Color.LightGray)
                     }
                 }
             }

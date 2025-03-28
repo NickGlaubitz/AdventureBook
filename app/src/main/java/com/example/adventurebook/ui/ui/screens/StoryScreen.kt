@@ -82,12 +82,13 @@ fun StoryScreen(
                 topBar = {
                     TopAppBar(
                         modifier = Modifier.height(70.dp),
-                        title = { Text(story!!.title, color = Color.White) },
+                        title = { /*Text(story!!.title, color = Color.White)*/ },
                         actions = {
                             IconButton(onClick = {
                                 viewModel.saveCurrentStory { id ->
                                     Toast.makeText(context, "Geschichte gespeichert", Toast.LENGTH_SHORT).show()
                                 }
+                                navController.navigate("Library")
                             }) {
                                 Icon(Icons.Default.Favorite, contentDescription = "Save")
                             }
@@ -131,7 +132,7 @@ fun StoryScreen(
                         ) {
                             Text(
                                 text = paragraphs.getOrNull(currentParagraph) ?: "Wie soll es weitergehen?",
-                                style = MaterialTheme.typography.bodyMedium,
+                                style = MaterialTheme.typography.bodyLarge,
                                 color = Color.White,
                                 modifier = Modifier
                                     .weight(1f)
