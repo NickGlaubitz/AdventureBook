@@ -45,7 +45,7 @@ fun LibraryScreen(
             Card(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(6.dp)
+                    .padding(4.dp)
                     .border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp))
 
                     .clickable { navController.navigate("story/${story.id}") },
