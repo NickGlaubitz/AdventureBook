@@ -3,6 +3,7 @@ package com.example.adventurebook.ui.ui.screens
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -50,19 +52,24 @@ fun LibraryScreen(
                 colors = CardDefaults.cardColors(Color.DarkGray)
             ) {
                 Row(modifier = Modifier.padding(16.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
-                    AsyncImage(
-                        model = story.ImageUrl,
-                        contentDescription = "Story Image",
-                        modifier = Modifier.size(70.dp),
-                        contentScale = ContentScale.Crop
-                    )
+
+                    Surface(
+                        shape = RoundedCornerShape(6.dp)
+                    ) {
+                        AsyncImage(
+                            model = story.ImageUrl,
+                            contentDescription = "Story Image",
+                            modifier = Modifier.size(70.dp),
+                            contentScale = ContentScale.Crop
+                        )
+                    }
 
                     Spacer(modifier = Modifier.width(16.dp))
 
-                    Column(
+                    Box(
                         modifier = Modifier
                             .fillMaxHeight(),
-                        verticalArrangement = Arrangement.Center
+                        contentAlignment = Alignment.Center
                     ) {
                         Text(story.title, style = MaterialTheme.typography.headlineMedium, color = Color.LightGray)
                         Text(story.content.take(50) + "...", style = MaterialTheme.typography.bodyLarge, color = Color.LightGray)
