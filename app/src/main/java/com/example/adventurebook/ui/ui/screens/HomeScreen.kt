@@ -94,6 +94,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
     var avatar by remember { mutableStateOf<Avatar?>(null) }
     var characters by remember { mutableStateOf(listOf<Character>()) }
     var selectedCharacters by remember { mutableStateOf(listOf<String>()) }
+    var newCharState by remember { mutableStateOf("") }
 
     var type by remember { mutableStateOf("Abenteuer") }
     var theme by remember { mutableStateOf("Freundschaft") }
@@ -104,7 +105,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
     var expandWorld by remember { mutableStateOf(false) }
     var showAddDialog by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit, characters) {
+    LaunchedEffect(Unit, newCharState) {
         avatar = onboardingViewModel.getAvatar()
         characters = characterViewModel.getAllCharacters()
         avatar?.let { selectedCharacters = listOf(it.name) }
@@ -362,7 +363,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                         onClick = {
                             CoroutineScope(Dispatchers.IO).launch {
                                 characterViewModel.saveCharacter(newCharacter)
-                                characterViewModel.getAllCharacters()
+                                newCharState = newCharacter
                                 showAddDialog = false
                             }
                         }
