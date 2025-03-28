@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,8 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
@@ -28,6 +31,8 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -45,6 +50,7 @@ import androidx.compose.ui.unit.max
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.adventurebook.data.viewmodel.StoryViewModel
+import com.example.adventurebook.ui.ui.theme.Purple40
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -64,7 +70,7 @@ fun StoryScreen(
                     .size(50.dp)
             )
         } else {
-            val paragraphs = story!!.content.split("\n\n").filter { it.isNotBlank() }
+
             AsyncImage(
                 model = story!!.ImageUrl,
                 contentDescription = "Story Image",
@@ -75,7 +81,8 @@ fun StoryScreen(
             Scaffold(
                 topBar = {
                     TopAppBar(
-                        title = { Text(story!!.title) },
+                        modifier = Modifier.height(70.dp),
+                        title = { Text(story!!.title, color = Color.White) },
                         actions = {
                             IconButton(onClick = {
                                 viewModel.saveCurrentStory { id ->
@@ -84,54 +91,83 @@ fun StoryScreen(
                             }) {
                                 Icon(Icons.Default.Favorite, contentDescription = "Save")
                             }
-                        }
+                        },
+                        colors = TopAppBarDefaults.topAppBarColors(
+                            Color.Transparent,
+                            scrolledContainerColor = Color.Transparent,
+                            navigationIconContentColor = Color.Transparent,
+                            titleContentColor = Color.White,
+                            actionIconContentColor = Color.White
+                        )
                     )
-                }
+                },
+                containerColor = Color.Transparent
             ) { padding ->
+                val paragraphs = story!!.content
+                    .replace(Regex("^\\*\\*.*?\\*\\*\\n*"), "")
+                    .split("\n\n")
+                    .filter { it.isNotBlank() }
+
                 Column(
                     modifier = Modifier
-                        .padding(padding)
                         .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        //.heightIn(max = 300.dp)
-                        .background(Color.Black.copy(alpha = 0.7f))
-                        .padding(16.dp),
-                    //verticalArrangement = Arrangement.SpaceBetween
+                        .fillMaxHeight(),
+
+                    verticalArrangement = Arrangement.Bottom,
                     horizontalAlignment = Alignment.CenterHorizontally
 
                 ) {
-                    Text(
-                        text = paragraphs.getOrNull(currentParagraph) ?: "Wie soll es weitergehen?",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = Color.White
-                    )
-
-                    Spacer(modifier = Modifier.height(16.dp))
-
-                    Row(
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(max = 300.dp)
+                            .background(Color.Black.copy(alpha = 0.7f))
+                            .padding(16.dp)
                     ) {
-                        IconButton(
-                            onClick = { if (currentParagraph > 0) currentParagraph-- },
-                            enabled = currentParagraph > 0
+                        Column(
+                            modifier = Modifier.fillMaxHeight(),
+                            verticalArrangement = Arrangement.SpaceBetween,
+                            horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Back")
-                        }
+                            Text(
+                                text = paragraphs.getOrNull(currentParagraph) ?: "Wie soll es weitergehen?",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = Color.White,
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .verticalScroll(rememberScrollState())
+                            )
 
-                        if (currentParagraph == paragraphs.size - 1) {
-                            Button(
-                                onClick = { /* Interaktionsfeature*/ }
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            Row(
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                modifier = Modifier.fillMaxWidth()
                             ) {
-                                Text("Fortsetzen")
-                            }
-                        }
+                                IconButton(
+                                    onClick = { if (currentParagraph > 0) currentParagraph-- },
+                                    enabled = currentParagraph > 0
+                                ) {
+                                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Back", tint = Color.White, modifier = Modifier.size(32.dp))
+                                }
 
-                        IconButton(
-                            onClick = { if (currentParagraph < paragraphs.size - 1) currentParagraph++ },
-                            enabled = currentParagraph < paragraphs.size - 1
-                        ) {
-                            Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Next")
+                                if (currentParagraph == paragraphs.size - 1) {
+                                    Button(
+                                        onClick = { /* Interaktionsfeature*/ }
+                                    ) {
+                                        Text("Fortsetzen")
+                                    }
+                                } else {
+                                    Spacer(modifier = Modifier.width(48.dp))
+                                }
+
+                                IconButton(
+                                    onClick = { if (currentParagraph < paragraphs.size - 1) currentParagraph++ },
+                                    enabled = currentParagraph < paragraphs.size - 1
+                                ) {
+                                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Next", tint = Color.White, modifier = Modifier.size(32.dp))
+                                }
+                            }
                         }
                     }
                 }

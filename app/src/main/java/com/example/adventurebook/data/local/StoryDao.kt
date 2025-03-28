@@ -1,6 +1,7 @@
 package com.example.adventurebook.data.local
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
@@ -16,4 +17,7 @@ interface StoryDao {
 
     @Query("SELECT * FROM story WHERE id = :id")
     fun getStoryById(id: Int): Flow<Story?>
+
+    @Delete
+    fun deleteStory(story: Story)
 }

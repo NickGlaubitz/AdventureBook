@@ -45,4 +45,8 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
     fun getStoryById(id: Int): Flow<Story?> = storyRepo.getStoryById(id)
 
     val allStories: Flow<List<Story>> = storyRepo.getAllStories()
+
+    fun deleteStory(story: Story) {
+        storyRepo.deleteStory(story)
+    }
 }
