@@ -79,6 +79,7 @@ fun StoryDetailScreen(
                         IconButton(onClick = {
                             viewModel.deleteStory(it)
                             Toast.makeText(context, "Geschichte gelöscht", Toast.LENGTH_SHORT).show()
+                            navhController.popBackStack()
 
                         }) {
                             Icon(Icons.Default.Delete, contentDescription = "Save", tint = Color.Red)

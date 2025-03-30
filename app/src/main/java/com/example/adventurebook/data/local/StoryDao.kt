@@ -19,5 +19,5 @@ interface StoryDao {
     fun getStoryById(id: Int): Flow<Story?>
 
     @Delete
-    fun deleteStory(story: Story)
+    suspend fun deleteStory(story: Story)
 }

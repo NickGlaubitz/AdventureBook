@@ -54,6 +54,8 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
     val allStories: Flow<List<Story>> = storyRepo.getAllStories()
 
     fun deleteStory(story: Story) {
-        storyRepo.deleteStory(story)
+        viewModelScope.launch {
+            storyRepo.deleteStory(story)
+        }
     }
 }
