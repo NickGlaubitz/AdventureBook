@@ -47,7 +47,7 @@ fun GenderCardGirl(isSelected: Boolean, onClick: () -> Unit) {
             Text("Mädchen")
             Spacer(modifier = Modifier.height(16.dp))
             Image(
-                painterResource(R.drawable.ic_launcher_foreground),
+                painterResource(R.drawable.femalesymbol),
                 contentDescription = "Boy"
             )
         }

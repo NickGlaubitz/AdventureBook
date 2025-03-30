@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
@@ -112,7 +113,7 @@ fun StoryDetailScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .heightIn(max = 300.dp)
-                        .background(Color.Black.copy(alpha = 0.7f))
+                        .background(Color.Black.copy(alpha = 0.7f), shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                         .padding(16.dp)
                 ) {
                     Column(
@@ -123,7 +124,7 @@ fun StoryDetailScreen(
                         Text(
                             text = paragraphs.getOrNull(currentParagraph) ?: "Wie soll es weitergehen?",
                             style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White,
+                            color = Color.White.copy(alpha = 0.9f),
                             modifier = Modifier
                                 .weight(1f)
                                 .verticalScroll(rememberScrollState())

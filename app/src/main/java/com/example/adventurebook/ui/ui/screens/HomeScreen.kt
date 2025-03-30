@@ -75,9 +75,6 @@ import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
 import com.example.adventurebook.ui.ui.components.CharacterButton
 import com.example.adventurebook.ui.ui.components.SelectionCard
-import com.example.adventurebook.ui.ui.components.ThemeSheet
-import com.example.adventurebook.ui.ui.components.TypeSheet
-import com.example.adventurebook.ui.ui.components.WorldSheet
 import com.example.adventurebook.ui.ui.theme.Background
 import com.example.adventurebook.ui.ui.theme.Purple40
 import kotlinx.coroutines.CoroutineScope
@@ -102,9 +99,6 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
     var theme by remember { mutableStateOf("Freundschaft") }
     var world by remember { mutableStateOf("Zauberwald") }
 
-    var expandType by remember { mutableStateOf(false) }
-    var expandTheme by remember { mutableStateOf(false) }
-    var expandWorld by remember { mutableStateOf(false) }
     var showAddDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(Unit, newCharState) {
