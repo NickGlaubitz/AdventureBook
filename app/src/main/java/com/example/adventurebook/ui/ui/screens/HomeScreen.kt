@@ -66,6 +66,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import com.example.adventurebook.R
 import com.example.adventurebook.data.local.Avatar
 import com.example.adventurebook.data.local.Character
 import com.example.adventurebook.data.repos.CharacterRepoInterface
@@ -73,6 +74,7 @@ import com.example.adventurebook.data.viewmodel.CharacterViewModel
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
 import com.example.adventurebook.ui.ui.components.CharacterButton
+import com.example.adventurebook.ui.ui.components.SelectionCard
 import com.example.adventurebook.ui.ui.components.ThemeSheet
 import com.example.adventurebook.ui.ui.components.TypeSheet
 import com.example.adventurebook.ui.ui.components.WorldSheet
@@ -145,133 +147,35 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
             Spacer(modifier = Modifier.height(32.dp))
 
             // Typ Card
-            Card(
-                modifier = Modifier.fillMaxWidth().border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp)),
-                elevation = CardDefaults.cardElevation(4.dp),
-                colors = CardDefaults.cardColors(Color.DarkGray)
-            ) {
-                Column {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { expandType = !expandType }
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Wähle die Art deiner Geschichte: \n\n$type", color = Color.LightGray)
-                        Icon(
-                            imageVector = if (expandType) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = "",
-                            tint = Color.LightGray
-                        )
-                    }
-                    AnimatedVisibility(visible = expandType) {
-                        Row(modifier = Modifier.padding(16.dp)) {
-                            listOf("Abenteuer", "Märchen", "Fantasie").forEach { option ->
-                                Card(
-                                    modifier = Modifier
-                                        .padding(end = 8.dp)
-                                        .border(width = 1.dp, color = Color.Gray, shape = RoundedCornerShape(12.dp))
-                                        .clickable {
-                                            type = option
-                                            expandType = false
-                                        },
-                                    elevation = CardDefaults.cardElevation(8.dp),
-                                    colors = CardDefaults.cardColors(Color.DarkGray)
-                                ) {
-                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall, color = Color.LightGray)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            SelectionCard(
+                onSelect = { type = it },
+                title = "Wähle die Geschichtenart",
+                options = listOf("Abenteuer", "Märchen", "Fantasie"),
+                standardValue = "Abenteuer",
+                imageId = R.drawable.ship
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             // Theme Card
-            Card(
-                modifier = Modifier.fillMaxWidth().border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp)),
-                elevation = CardDefaults.cardElevation(4.dp),
-                colors = CardDefaults.cardColors(Color.DarkGray)
-            ) {
-                Column {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { expandTheme = !expandTheme }
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Wähle das Thema deiner Geschichte: \n\n$theme", color = Color.LightGray)
-                        Icon(
-                            imageVector = if (expandTheme) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = "",
-                            tint = Color.LightGray
-                        )
-                    }
-                    AnimatedVisibility(visible = expandTheme) {
-                        Row(modifier = Modifier.padding(16.dp)) {
-                            listOf("Freundschaft", "Mut", "Liebe").forEach { option ->
-                                Card(
-                                    modifier = Modifier
-                                        .padding(end = 8.dp)
-                                        .clickable {
-                                            theme = option
-                                            expandTheme = false
-                                        },
-                                    elevation = CardDefaults.cardElevation(2.dp)
-                                ) {
-                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            SelectionCard(
+                onSelect = { theme = it },
+                title = "Wähle das Geschichtenthema",
+                options = listOf("Freundschaft", "Mut", "Liebe"),
+                standardValue = "Freundschaft",
+                imageId = R.drawable.book
+            )
 
             Spacer(modifier = Modifier.height(8.dp))
 
             // World Card
-            Card(
-                modifier = Modifier.fillMaxWidth().border(width = 2.dp, color = Color(0xFF6650a4), shape = RoundedCornerShape(12.dp)),
-                elevation = CardDefaults.cardElevation(4.dp),
-                colors = CardDefaults.cardColors(Color.DarkGray)
-            ) {
-                Column {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { expandWorld = !expandWorld }
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text("Wähle die Welt deiner Geschichte: \n\n$world", color = Color.LightGray)
-                        Icon(
-                            imageVector = if (expandWorld) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
-                            contentDescription = "",
-                            tint = Color.LightGray
-                        )
-                    }
-                    AnimatedVisibility(visible = expandWorld) {
-                        Row(modifier = Modifier.padding(16.dp)) {
-                            listOf("Weltraum", "Zauberwald", "Unterwasserwelt").forEach { option ->
-                                Card(
-                                    modifier = Modifier
-                                        .padding(end = 8.dp)
-                                        .clickable {
-                                            world = option
-                                            expandWorld = false
-                                        },
-                                    elevation = CardDefaults.cardElevation(2.dp)
-                                ) {
-                                    Text(option, modifier = Modifier.padding(8.dp), style = MaterialTheme.typography.bodySmall)
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            SelectionCard(
+                onSelect = { world = it },
+                title = "Wähle die Geschichtenwelt",
+                options = listOf("Weltraum", "Zauberwald", "Unterwasserwelt"),
+                standardValue = "Weltraum",
+                imageId = R.drawable.world
+            )
 
             Spacer(modifier = Modifier.height(24.dp))
 
