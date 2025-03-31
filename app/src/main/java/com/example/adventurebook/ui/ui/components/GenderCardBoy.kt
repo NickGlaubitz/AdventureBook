@@ -45,7 +45,7 @@ fun GenderCardBoy(isSelected: Boolean, onClick: () -> Unit) {
             verticalArrangement = Arrangement.Center
         ) {
             Text("Junge")
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Image(
                 painterResource(R.drawable.malesymbol),
                 contentDescription = "Boy"
