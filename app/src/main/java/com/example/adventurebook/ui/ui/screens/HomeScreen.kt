@@ -165,7 +165,7 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
             // World Card
             SelectionCard(
                 onSelect = { world = it },
-                title = "Wähle die Geschichtenwelt",
+                title = "Wähle die Welt der Geschichte",
                 options = listOf("Weltraum", "Zauberwald", "Unterwasserwelt"),
                 standardValue = "Weltraum",
                 imageId = R.drawable.world
