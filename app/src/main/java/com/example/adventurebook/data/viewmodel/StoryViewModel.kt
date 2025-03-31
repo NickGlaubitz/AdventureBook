@@ -1,5 +1,6 @@
 package com.example.adventurebook.data.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.adventurebook.data.local.Story
@@ -9,33 +10,93 @@ import com.example.adventurebook.data.repos.StoryRepoInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.serialization.json.JsonNull.content
 
 class StoryViewModel(private val storyRepo: StoryRepoInterface, private val openAiService: OpenAiService, private val avatarRepo: AvatarRepoInterface): ViewModel() {
-    
+
     val currentStory = MutableStateFlow<Story?>(null)
-    
+    val continuationOptions = MutableStateFlow<List<String>>(emptyList())
+
     fun generateStory(type: String, theme: String, world: String, supportingCharacters: List<String>) {
         viewModelScope.launch {
             val avatar = avatarRepo.getAvatar() ?: return@launch
 
-            val prompt = "Erstelle eine $type Geschichte über $theme in einer $world mit den Nebencharakteren: ${supportingCharacters.joinToString(", ")} für ein Kind namens ${avatar.name} im Alter von ${avatar.age}"
-            
+            val prompt = """
+                Erstelle eine $type Geschichte über $theme in einer $world mit den Nebencharakteren: ${supportingCharacters.joinToString(", ")} für ein Kind namens ${avatar.name} im Alter von ${avatar.age}.
+                Am Ende der Geschichte füge 2 kurze Fortsetzungsoptionen hinzu, wie sie weitergehen könnte, im Format:
+                **Fortsetzungsoptionen**
+                1. [Option 1]
+                2. [Option 2]
+            """.trimIndent()
+
             val storyText = openAiService.generateText(prompt)
-            
+
+            // Titel trennen
+            val titleMatch = Regex("\\*\\*(.*?)\\*\\*").find(storyText)
+            var title = titleMatch?.groupValues?.get(1)?.replace(Regex("^Titel:\\s*"), "") ?: "Neue Geschichte für ${avatar.name}"
+            //title = title.replace(Regex("^Titel:\\s*"), "")
+
+            // Optionen trennen
+            val optionsMatch = Regex("\\*\\*Fortsetzungsoptionen\\*\\*\\n([\\s\\S]*?)$", RegexOption.DOT_MATCHES_ALL).find(storyText)
+            val optionsRaw = optionsMatch?.groupValues?.get(1)?.trim() ?: ""
+            val options = optionsRaw.split("\n")
+                .map { it.trim() }
+                .filter { it.isNotBlank() && it.matches(Regex("^\\d\\.\\s*.*")) }
+                .map { it.replaceFirst(Regex("^\\d\\.\\s*\\*\\*?"), "").replace(Regex("\\*\\*?$"), "").trim() }
+
+            // Content trennen
+            val content = storyText.substringBefore("**Fortsetzungsoptionen**")
+                .replace(Regex("\\*\\*.*?\\*\\*\\n*"), "")
+                .trim()
+
             val imageUrl = openAiService.generateImage(storyText.substring(0, minOf(100, storyText.length)))
 
-            // Titel und Inhalt trennen
-
-            val titleMatch = Regex("\\*\\*(.*?)\\*\\*").find(storyText)
-            var title = titleMatch?.groupValues?.get(1) ?: "Neue Geschichte für ${avatar.name}"
-            title = title.replace(Regex("^Titel:\\s*"), "")
-            val content = storyText.replace(Regex("\\*\\*.*?\\*\\*\\n*"), "").trim()
-            
             currentStory.value = Story(
                 title = title,
                 content = content,
                 ImageUrl = imageUrl
             )
+
+            continuationOptions.value = options
+            Log.d("StoryViewModel", "Raw options: $optionsRaw")
+            Log.d("StoryViewModel", "Extracted options: $options")
+        }
+    }
+
+    fun continueStory(selectedOption: String) {
+        viewModelScope.launch {
+            val current = currentStory.value ?: return@launch
+            val avatar = avatarRepo.getAvatar() ?: return@launch
+
+            val prompt = """
+                Setze die folgende Geschichte fort, basierend auf der gewählten Option: $selectedOption.
+                Hier ist der bisherige Inhalt: "${current.content}".
+                Schreibe den nächsten Teil der Geschichte für ein Kind namens ${avatar.name} im Alter von ${avatar.age} und füge am Ende wieder 2 kurze Fortsetzungsoptionen hinzu im Format:
+                **Fortsetzungsoptionen**
+                1. [Option 1]
+                2. [Option 2]
+            """.trimIndent()
+
+            val continuationText = openAiService.generateText(prompt)
+
+            // Optionen trennen
+            val optionsMatch = Regex("\\*\\*Fortsetzungsoptionen\\*\\*\\n([\\s\\S]*?)$", RegexOption.DOT_MATCHES_ALL).find(continuationText)
+            val optionsRaw = optionsMatch?.groupValues?.get(1)?.trim() ?: ""
+            val newOptions = optionsRaw.split("\n")
+                .map { it.trim() }
+                .filter { it.isNotBlank() && it.matches(Regex("^\\d\\.\\s*.*")) }
+                .map { it.replaceFirst(Regex("^\\d\\.\\s*\\*\\*?"), "").replace(Regex("\\*\\*?$"), "").trim() }
+
+            // Content trennen
+            val newContent = continuationText.substringBefore("**Fortsetzungsoptionen**")
+                .replace(Regex("\\*\\*.*?\\*\\*\\n*"), "")
+                .trim()
+
+            currentStory.value = current.copy(
+                content = "${current.content}\n\n$newContent"
+            )
+
+            continuationOptions.value = newOptions
         }
     }
 
@@ -44,6 +105,7 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
             viewModelScope.launch {
                 val id = storyRepo.insertStory(story)
                 currentStory.value = null
+                continuationOptions.value = emptyList()
                 onSaved(id)
             }
         }

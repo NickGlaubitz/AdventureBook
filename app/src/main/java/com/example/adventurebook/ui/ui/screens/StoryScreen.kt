@@ -31,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
@@ -60,8 +61,10 @@ fun StoryScreen(
     viewModel: StoryViewModel
 ) {
     val story by viewModel.currentStory.collectAsState()
+    val options by viewModel.continuationOptions.collectAsState()
     val context = LocalContext.current
     var currentParagraph by remember { mutableIntStateOf(0) }
+    var isContinuing by remember { mutableStateOf(false) }
 
     Box(modifier = Modifier.fillMaxSize()) {
         if (story == null) {
@@ -154,10 +157,22 @@ fun StoryScreen(
                                 }
 
                                 if (currentParagraph == paragraphs.size - 1) {
-                                    Button(
-                                        onClick = { /* Interaktionsfeature*/ }
-                                    ) {
-                                        Text("Fortsetzen")
+                                    if (isContinuing) {
+                                        CircularProgressIndicator(modifier = Modifier.size(50.dp), color = Purple40)
+                                    } else if (options.isNotEmpty()) {
+                                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                                            options.forEach { option ->
+                                                TextButton(
+                                                    onClick = {
+                                                        isContinuing = true
+                                                        viewModel.continueStory(option)
+                                                        isContinuing = false
+                                                    }
+                                                ) {
+                                                    Text(option, color = Color.White.copy(0.9f))
+                                                }
+                                            }
+                                        }
                                     }
                                 } else {
                                     Spacer(modifier = Modifier.width(48.dp))
