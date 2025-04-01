@@ -11,5 +11,6 @@ data class Story(
     val title: String,
     val content: String,
     val ImageUrl: String,
-    val createdAt: Long = System.currentTimeMillis()
+    val createdAt: Long = System.currentTimeMillis(),
+    val options: String = ""
 )

@@ -38,17 +38,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import coil3.compose.AsyncImage
 import com.example.adventurebook.data.viewmodel.StoryViewModel
+import com.example.adventurebook.ui.ui.components.LoadingAnimation
+import com.example.adventurebook.ui.ui.components.OptionCard
 import com.example.adventurebook.ui.ui.theme.Purple40
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,8 +64,12 @@ fun StoryDetailScreen(
     storyId: Int
 ) {
     val story by viewModel.getStoryById(storyId).collectAsState(initial = null)
+    val options = story!!.options.split(";").filter { it.isNotBlank() }
     val context = LocalContext.current
     var currentParagraph by remember { mutableIntStateOf(0) }
+    val isGenerating by viewModel.isGenerating.collectAsState()
+    var contentHeight by remember { mutableStateOf(0.dp) }
+    val density = LocalDensity.current
 
     story?.let { it ->
         AsyncImage(
@@ -113,23 +122,50 @@ fun StoryDetailScreen(
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .heightIn(max = 300.dp)
+                        //.heightIn(max = 300.dp)
                         .background(Color.Black.copy(alpha = 0.7f), shape = RoundedCornerShape(topStart = 16.dp, topEnd = 16.dp))
                         .padding(16.dp)
                 ) {
                     Column(
-                        modifier = Modifier.fillMaxHeight(),
-                        verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier
+                            .onGloballyPositioned { coordinates ->
+                                val heightPx = coordinates.size.height
+                                contentHeight = with(density) { heightPx.toDp() } + 32.dp
+                            }
                     ) {
-                        Text(
-                            text = paragraphs.getOrNull(currentParagraph) ?: "Wie soll es weitergehen?",
-                            style = MaterialTheme.typography.bodyLarge,
-                            color = Color.White.copy(alpha = 0.9f),
-                            modifier = Modifier
-                                .weight(1f)
-                                .verticalScroll(rememberScrollState())
-                        )
+                        if (currentParagraph < paragraphs.size) {
+                            Text(
+                                text = paragraphs.getOrNull(currentParagraph) ?: "Es ist ein Fehler aufgetreten, bitte erneut versuchen.",
+                                style = MaterialTheme.typography.bodyLarge,
+                                color = Color.White.copy(alpha = 0.9f),
+                            )
+                        } else if (options.isNotEmpty()) {
+                            Column(
+                                verticalArrangement = Arrangement.spacedBy(8.dp),
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                if (isGenerating) {
+                                    LoadingAnimation()
+                                } else {
+                                    Text(
+                                        text = "Wie soll deine Geschichte weitergehen?",
+                                        style = MaterialTheme.typography.bodyLarge,
+                                        color = Color.White.copy(0.9f),
+                                    )
+
+                                    options.forEach { option ->
+                                        OptionCard(
+                                            text = option,
+                                            onClick = {
+                                                viewModel.continueStory(option, story)
+                                                currentParagraph = paragraphs.size
+                                            }
+                                        )
+                                    }
+                                }
+                            }
+                        }
 
                         Spacer(modifier = Modifier.height(8.dp))
 
@@ -144,19 +180,11 @@ fun StoryDetailScreen(
                                 Icon(Icons.AutoMirrored.Filled.KeyboardArrowLeft, contentDescription = "Back", tint = Color.White, modifier = Modifier.size(32.dp))
                             }
 
-                            if (currentParagraph == paragraphs.size - 1) {
-                                Button(
-                                    onClick = { /* Interaktionsfeature*/ }
-                                ) {
-                                    Text("Fortsetzen")
-                                }
-                            } else {
-                                Spacer(modifier = Modifier.width(48.dp))
-                            }
+                            Spacer(modifier = Modifier.width(40.dp))
 
                             IconButton(
-                                onClick = { if (currentParagraph < paragraphs.size - 1) currentParagraph++ },
-                                enabled = currentParagraph < paragraphs.size - 1
+                                onClick = { if (currentParagraph < paragraphs.size) currentParagraph++ },
+                                enabled = currentParagraph < paragraphs.size
                             ) {
                                 Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = "Next", tint = Color.White, modifier = Modifier.size(32.dp))
                             }

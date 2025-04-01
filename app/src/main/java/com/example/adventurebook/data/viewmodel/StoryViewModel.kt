@@ -57,7 +57,8 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
             currentStory.value = Story(
                 title = title,
                 content = content,
-                ImageUrl = imageUrl
+                ImageUrl = imageUrl,
+                options = options.joinToString(";")
             )
 
             continuationOptions.value = options
@@ -68,7 +69,7 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
         }
     }
 
-    fun continueStory(selectedOption: String) {
+    fun continueStory(selectedOption: String, story: Story? = currentStory.value) {
         viewModelScope.launch {
             val current = currentStory.value ?: return@launch
             val avatar = avatarRepo.getAvatar() ?: return@launch
@@ -101,10 +102,17 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
 
             val newImageUrl = openAiService.generateImage(newContent.substring(0, minOf(100, newContent.length)))
 
-            currentStory.value = current.copy(
+            val updatedStory = current.copy(
                 content = "${current.content}\n\n$newContent",
-                ImageUrl = newImageUrl
+                ImageUrl = newImageUrl,
+                options = newOptions.joinToString(";")
             )
+
+            if (story == currentStory.value) {
+                currentStory.value = updatedStory
+            } else {
+                storyRepo.updateStory(updatedStory)
+            }
 
             continuationOptions.value = newOptions
 
@@ -115,6 +123,7 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
     fun saveCurrentStory(onSaved: (Long) -> Unit) {
         currentStory.value?.let { story ->
             viewModelScope.launch {
+                val updatedStory = story.copy(options = continuationOptions.value.joinToString(";"))
                 val id = storyRepo.insertStory(story)
                 currentStory.value = null
                 continuationOptions.value = emptyList()
