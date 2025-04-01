@@ -71,7 +71,7 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
 
     fun continueStory(selectedOption: String, story: Story? = currentStory.value) {
         viewModelScope.launch {
-            val current = currentStory.value ?: return@launch
+            val current = story ?: return@launch
             val avatar = avatarRepo.getAvatar() ?: return@launch
 
             val prompt = """
@@ -108,7 +108,7 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
                 options = newOptions.joinToString(";")
             )
 
-            if (story == currentStory.value) {
+            if (current.id.toLong() == 0L) {
                 currentStory.value = updatedStory
             } else {
                 storyRepo.updateStory(updatedStory)
@@ -124,7 +124,7 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
         currentStory.value?.let { story ->
             viewModelScope.launch {
                 val updatedStory = story.copy(options = continuationOptions.value.joinToString(";"))
-                val id = storyRepo.insertStory(story)
+                val id = storyRepo.insertStory(updatedStory)
                 currentStory.value = null
                 continuationOptions.value = emptyList()
                 onSaved(id)

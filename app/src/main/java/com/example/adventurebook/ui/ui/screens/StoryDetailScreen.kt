@@ -64,7 +64,6 @@ fun StoryDetailScreen(
     storyId: Int
 ) {
     val story by viewModel.getStoryById(storyId).collectAsState(initial = null)
-    val options = story!!.options.split(";").filter { it.isNotBlank() }
     val context = LocalContext.current
     var currentParagraph by remember { mutableIntStateOf(0) }
     val isGenerating by viewModel.isGenerating.collectAsState()
@@ -134,6 +133,7 @@ fun StoryDetailScreen(
                                 contentHeight = with(density) { heightPx.toDp() } + 32.dp
                             }
                     ) {
+                        val options = story!!.options.split(";").filter { it.isNotBlank() }
                         if (currentParagraph < paragraphs.size) {
                             Text(
                                 text = paragraphs.getOrNull(currentParagraph) ?: "Es ist ein Fehler aufgetreten, bitte erneut versuchen.",
