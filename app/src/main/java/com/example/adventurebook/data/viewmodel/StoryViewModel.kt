@@ -16,6 +16,7 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
 
     val currentStory = MutableStateFlow<Story?>(null)
     val continuationOptions = MutableStateFlow<List<String>>(emptyList())
+    val isGenerating = MutableStateFlow(false)
 
     fun generateStory(type: String, theme: String, world: String, supportingCharacters: List<String>) {
         viewModelScope.launch {
@@ -28,6 +29,8 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
                 1. [Option 1]
                 2. [Option 2]
             """.trimIndent()
+
+            isGenerating.value = true
 
             val storyText = openAiService.generateText(prompt)
 
@@ -60,6 +63,8 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
             continuationOptions.value = options
             Log.d("StoryViewModel", "Raw options: $optionsRaw")
             Log.d("StoryViewModel", "Extracted options: $options")
+
+            isGenerating.value = false
         }
     }
 
@@ -77,6 +82,8 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
                 2. [Option 2]
             """.trimIndent()
 
+            isGenerating.value = true
+
             val continuationText = openAiService.generateText(prompt)
 
             // Optionen trennen
@@ -92,11 +99,16 @@ class StoryViewModel(private val storyRepo: StoryRepoInterface, private val open
                 .replace(Regex("\\*\\*.*?\\*\\*\\n*"), "")
                 .trim()
 
+            val newImageUrl = openAiService.generateImage(newContent.substring(0, minOf(100, newContent.length)))
+
             currentStory.value = current.copy(
-                content = "${current.content}\n\n$newContent"
+                content = "${current.content}\n\n$newContent",
+                ImageUrl = newImageUrl
             )
 
             continuationOptions.value = newOptions
+
+            isGenerating.value = false
         }
     }
 

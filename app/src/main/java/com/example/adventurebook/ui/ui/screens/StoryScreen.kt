@@ -68,7 +68,7 @@ fun StoryScreen(
     val options by viewModel.continuationOptions.collectAsState()
     val context = LocalContext.current
     var currentParagraph by remember { mutableIntStateOf(0) }
-    var isContinuing by remember { mutableStateOf(false) }
+    val isGenerating by viewModel.isGenerating.collectAsState()
     var contentHeight by remember { mutableStateOf(0.dp) }
     val density = LocalDensity.current
 
@@ -148,11 +148,11 @@ fun StoryScreen(
                                     verticalArrangement = Arrangement.spacedBy(8.dp),
                                     horizontalAlignment = Alignment.CenterHorizontally
                                 ) {
-                                    if (isContinuing) {
+                                    if (isGenerating) {
                                         LoadingAnimation()
                                     } else {
                                         Text(
-                                            text = "Wie soll die Geschichte weitergehen?",
+                                            text = "Wie soll deine Geschichte weitergehen?",
                                             style = MaterialTheme.typography.bodyLarge,
                                             color = Color.White.copy(0.9f),
                                         )
@@ -161,9 +161,7 @@ fun StoryScreen(
                                             OptionCard(
                                                 text = option,
                                                 onClick = {
-                                                    isContinuing = true
                                                     viewModel.continueStory(option)
-                                                    isContinuing = false
                                                     currentParagraph = paragraphs.size
                                                 }
                                             )
