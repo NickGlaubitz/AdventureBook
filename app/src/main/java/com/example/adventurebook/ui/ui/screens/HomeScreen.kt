@@ -74,6 +74,7 @@ import com.example.adventurebook.data.viewmodel.CharacterViewModel
 import com.example.adventurebook.data.viewmodel.OnboardingViewModel
 import com.example.adventurebook.data.viewmodel.StoryViewModel
 import com.example.adventurebook.ui.ui.components.CharacterButton
+import com.example.adventurebook.ui.ui.components.GenerateButton
 import com.example.adventurebook.ui.ui.components.SelectionCard
 import com.example.adventurebook.ui.ui.theme.Background
 import com.example.adventurebook.ui.ui.theme.Purple40
@@ -133,8 +134,6 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 .padding(padding)
                 .padding(horizontal = 16.dp)
                 .fillMaxSize(),
-            //horizontalAlignment = Alignment.CenterHorizontally
-            //verticalArrangement = Arrangement.Top
         ) {
             Text("lass uns eine neue Geschichte erstellen...", style = MaterialTheme.typography.bodyLarge, color = Color.White)
 
@@ -224,12 +223,17 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
             Spacer(modifier = Modifier.height(16.dp))
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                OutlinedButton(onClick = {
+                GenerateButton {
                     storyViewModel.generateStory(type, theme, world, selectedCharacters)
                     navController.navigate("story")
-                }) {
-                    Text("Los geht´s", color = Color.White)
                 }
+
+//                OutlinedButton(onClick = {
+//                    storyViewModel.generateStory(type, theme, world, selectedCharacters)
+//                    navController.navigate("story")
+//                }) {
+//                    Text("Los geht´s", color = Color.White)
+//                }
             }
         }
     }
