@@ -4,6 +4,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.rememberScrollableState
+import androidx.compose.foundation.gestures.scrollable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +22,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -133,7 +137,11 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
             modifier = Modifier
                 .padding(padding)
                 .padding(horizontal = 16.dp)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .scrollable(
+                    state = rememberScrollState(),
+                    orientation = Orientation.Vertical
+                ),
         ) {
             Text("lass uns eine neue Geschichte erstellen...", style = MaterialTheme.typography.bodyLarge, color = Color.White)
 
@@ -227,13 +235,6 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                     storyViewModel.generateStory(type, theme, world, selectedCharacters)
                     navController.navigate("story")
                 }
-
-//                OutlinedButton(onClick = {
-//                    storyViewModel.generateStory(type, theme, world, selectedCharacters)
-//                    navController.navigate("story")
-//                }) {
-//                    Text("Los geht´s", color = Color.White)
-//                }
             }
         }
     }
