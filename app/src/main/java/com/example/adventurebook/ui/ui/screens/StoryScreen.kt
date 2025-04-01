@@ -21,6 +21,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material3.Button
@@ -96,7 +97,15 @@ fun StoryScreen(
                                 }
                                 navController.navigate("Library")
                             }) {
-                                Icon(Icons.Default.Favorite, contentDescription = "Save")
+                                Box(
+                                    modifier = Modifier
+                                        .background(Color.White.copy(alpha = 0.7f), shape = RoundedCornerShape(8.dp))
+                                        .padding(2.dp)
+                                ) {
+                                    Row {
+                                        Icon(Icons.Default.Favorite, contentDescription = "Save", tint = Color.Red)
+                                    }
+                                }
                             }
                         },
                         colors = TopAppBarDefaults.topAppBarColors(

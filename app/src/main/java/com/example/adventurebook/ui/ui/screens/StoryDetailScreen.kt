@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -81,7 +82,7 @@ fun StoryDetailScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
-                    modifier = Modifier.height(70.dp),
+                    modifier = Modifier.height(80.dp),
                     title = { /*Text(it.title, color = Color.White)*/ },
                     actions = {
                         IconButton(onClick = {
@@ -90,7 +91,16 @@ fun StoryDetailScreen(
                             navhController.popBackStack()
 
                         }) {
-                            Icon(Icons.Default.Delete, contentDescription = "Save", tint = Color.Red)
+                            Box(
+                                modifier = Modifier
+                                    .background(Color.White.copy(alpha = 0.7f), shape = RoundedCornerShape(8.dp))
+                                    .padding(2.dp)
+                            ) {
+                                Row {
+                                    Icon(Icons.Default.Delete, contentDescription = "Save", tint = Color.Red)
+                                }
+
+                            }
                         }
                     },
                     colors = TopAppBarDefaults.topAppBarColors(
