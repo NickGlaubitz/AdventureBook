@@ -1,6 +1,7 @@
 package com.example.adventurebook.ui.ui.screens
 
 import android.widget.Toast
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -77,13 +78,14 @@ fun StoryScreen(
         if (story == null) {
             LoadingAnimation(modifier = Modifier.align(Alignment.Center))
         } else {
-
-            AsyncImage(
-                model = story!!.ImageUrl,
-                contentDescription = "Story Image",
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
+            Crossfade(targetState = story!!.ImageUrl) { url ->
+                AsyncImage(
+                    model = url,
+                    contentDescription = "Story Image",
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
+            }
 
             Scaffold(
                 topBar = {

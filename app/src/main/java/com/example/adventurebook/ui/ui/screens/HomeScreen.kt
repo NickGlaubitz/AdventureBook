@@ -248,8 +248,8 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
                 shape = MaterialTheme.shapes.large,
                 tonalElevation = AlertDialogDefaults.TonalElevation
             ) {
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text("Charakter hinzufügen", style = MaterialTheme.typography.headlineMedium)
+                Column(modifier = Modifier.padding(16.dp), horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text("Charakter hinzufügen", style = MaterialTheme.typography.bodyLarge)
 
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -262,16 +262,27 @@ fun HomeScreen(navController: NavController, storyViewModel: StoryViewModel) {
 
                     Spacer(modifier = Modifier.height(8.dp))
 
-                    TextButton(
-                        onClick = {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                characterViewModel.saveCharacter(newCharacter)
-                                newCharState = newCharacter
-                                showAddDialog = false
-                            }
-                        }
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        Text("Hinzufügen")
+                        TextButton(
+                            onClick = {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    characterViewModel.saveCharacter(newCharacter)
+                                    newCharState = newCharacter
+                                    showAddDialog = false
+                                }
+                            }
+                        ) {
+                            Text("Hinzufügen")
+                        }
+
+                        TextButton(
+                            onClick = { showAddDialog = false }
+                        ) {
+                            Text("Abbrechen")
+                        }
                     }
                 }
             }

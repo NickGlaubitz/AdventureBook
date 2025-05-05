@@ -10,7 +10,6 @@ import com.example.adventurebook.data.repos.StoryRepoInterface
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
-import kotlinx.serialization.json.JsonNull.content
 
 class StoryViewModel(private val storyRepo: StoryRepoInterface, private val openAiService: OpenAiService, private val avatarRepo: AvatarRepoInterface): ViewModel() {
 
