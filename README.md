@@ -53,9 +53,9 @@ Kinder können ihre eigene Geschichte konfigurieren, fortsetzen und speichern
 4. **Library:** Sieh dir gespeicherte Geschichten an, setze sie fort oder lösche sie
 
 ## Screenshots
-![Onboarding](app/src/main/res/drawable/screenshot_onboarding.png)
-![Home](app/src/main/res/drawable/screenshot_home.png)
-![Story](app/src/main/res/drawable/screenshot_story.png)
+![Onboarding](app/src/main/res/drawable/screenshot_onboarding.png) ![Home](app/src/main/res/drawable/screenshot_home.png) ![Story](app/src/main/res/drawable/screenshot_story.png)
+
+
 
 ## Architektur
 - **Screens:** OnBoardingScreen, HomeScreen, StoryScreen, LibraryScreen, StoryDetailScreen
