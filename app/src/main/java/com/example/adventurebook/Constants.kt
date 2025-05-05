@@ -6,5 +6,5 @@ import com.aallam.openai.api.image.internal.ImageResponseFormat.Companion.url
 
 
 object Constants{
-    const val OPENAI_API_KEY = ""
+    const val OPENAI_API_KEY = "Your Key here"
 }
