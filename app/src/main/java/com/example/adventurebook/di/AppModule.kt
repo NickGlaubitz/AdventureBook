@@ -1,12 +1,8 @@
 package com.example.adventurebook.di
 
-import androidx.lifecycle.ViewModelProvider
 import androidx.room.Room
-import coil3.decode.Decoder
-import coil3.network.NetworkFetcher
 import com.example.adventurebook.Constants
 import com.example.adventurebook.data.local.AppDatabase
-import com.example.adventurebook.data.local.Avatar
 import com.example.adventurebook.data.remote.OpenAiApi
 import com.example.adventurebook.data.remote.OpenAiService
 import com.example.adventurebook.data.repos.AvatarRepoImpl
@@ -24,10 +20,8 @@ import okhttp3.OkHttpClient
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.module
-import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
-import retrofit2.create
 import java.util.concurrent.TimeUnit
 
 val databaseModule = module {
